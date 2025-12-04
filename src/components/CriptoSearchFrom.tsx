@@ -1,6 +1,8 @@
+import { useCryptoStore } from "../store"
 import { currencies } from "../data"
 
 export default function CriptoSearchFrom() {
+    const cryptocurrencies = useCryptoStore((state) => state.cryptocurrencies)
   return (
     <form className="form">
         <div className="field">
@@ -16,7 +18,13 @@ export default function CriptoSearchFrom() {
         <div className="field">
             <label htmlFor="criptocurrency">CriptoMoneda:</label>
             <select id="criptocurrency" name="criptocurrency">
-                <option value="">-- Selecciona tu Moneda --</option>
+                <option value="">-- Selecciona tu Crypto --</option>
+                {cryptocurrencies.map( crypto => (
+                    <option
+                        key={crypto.CoinInfo.FullName}
+                        value={crypto.CoinInfo.Name}
+                        >{crypto.CoinInfo.FullName} </option>                  
+                ))}
             </select>
         </div>
 
