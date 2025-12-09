@@ -1,73 +1,77 @@
-# React + TypeScript + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Cotizador de Criptomonedas
 
-Currently, two official plugins are available:
+Aplicación React + TypeScript que consume la API pública de **CryptoCompare** para cotizar pares de criptomoneda vs moneda fiat. El foco del proyecto está en validar el contrato de datos con **Zod** y manejar el estado global con **Zustand**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+</div>
 
-## React Compiler
+## ✨ Características principales
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- Cotización en tiempo real de las 20 criptomonedas con mayor capitalización.
+- Búsqueda de pares formada por moneda fiat + criptomoneda.
+- Validación robusta de las respuestas HTTP mediante **Zod**, evitando renders con datos incompletos.
+- Manejo global del estado, cargas y errores con un store de **Zustand** minimalista.
+- Indicador visual de carga (spinner) con retardo mínimo de 1 s para mejorar la experiencia de usuario.
+- Maquetación responsiva con CSS puro.
 
-## Expanding the ESLint configuration
+## 🛠️ Stack y dependencias
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- `React 18` + `Vite` + `TypeScript`
+- `Zustand` para el estado global y side effects asincrónicos.
+- `Zod` para validar: listado de criptos, pares seleccionados y cotizaciones.
+- `Axios` para el consumo de la API de CryptoCompare.
+- `CSS` modularizado (spinner + estilos globales).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📂 Estructura relevante
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+ ├─ components/
+ │   ├─ CriptoSearchFrom.tsx      # Formulario controlado
+ │   ├─ CryptoPriceDispaly.tsx    # Resultado + spinner
+ │   └─ Spinner.tsx               # Indicador de carga
+ ├─ services/CryptoService.ts     # Llamadas HTTP (axios)
+ ├─ schema/crypto-schema.ts       # Validaciones Zod
+ ├─ store.ts                      # Store de Zustand
+ └─ types/                        # Tipados derivados de Zod
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Cómo ejecutar el proyecto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. **Requisitos previos**
+   - Node.js >= 18
+   - npm (incluido con Node)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2. **Instalar dependencias**
+   ```bash
+   npm install
+   ```
+
+3. **Levantar el entorno de desarrollo**
+   ```bash
+   npm run dev
+   ```
+   Abre la URL que Vite imprime en consola (por defecto `http://localhost:5173`).
+
+4. **Build de producción**
+   ```bash
+   npm run build
+   npm run preview
+   ```
+
+## 🧠 Decisiones técnicas destacadas
+
+- **Separación de responsabilidades**: los servicios HTTP solo retornan datos validados. Si Zod rechaza la respuesta, se evita propagar estados inconsistentes.
+- **Zustand + acciones puras**: el store se encarga de orquestar loading states, retrasar el spinner y exponer acciones simples al resto de la app.
+- **UI declarativa**: `CryptoPriceDispaly` muestra el spinner o la cotización según el estado derivado (`loading` y `result`).
+
+## 📌 Mejoras futuras
+
+- Manejo explícito de errores de red y mensajes para el usuario.
+- Internacionalización del formato de números y fechas.
+- Tests unitarios para el store y los esquemas Zod.
+
+---
+
+¿Tienes sugerencias o encontraste un bug? ¡Abre un issue o envía un PR! 😊

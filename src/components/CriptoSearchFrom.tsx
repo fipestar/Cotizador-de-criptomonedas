@@ -2,7 +2,6 @@ import { useCryptoStore } from "../store"
 import { currencies } from "../data"
 import { useState, type ChangeEvent, type FormEvent } from "react"
 import type { Pair } from "../types"
-import { set } from "zod"
 import ErrorMessage from "./ErrorMessage"
 
 export default function CriptoSearchFrom() {
